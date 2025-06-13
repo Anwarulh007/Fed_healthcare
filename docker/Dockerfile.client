@@ -1,0 +1,32 @@
+FROM tensorflow/tensorflow:2.13.0
+
+
+
+WORKDIR /app
+
+# ✅ Install dependencies
+COPY requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# ✅ Copy source code
+COPY client/ client/
+COPY model/ model/
+COPY utils/ utils/
+COPY wait-for-server.py wait-for-server.py
+COPY client/encryption_utils.py client/encryption_utils.py
+
+ENV TF_CPP_MIN_LOG_LEVEL=3
+ENV GLOG_minloglevel=3
+ENV FLAGS_minloglevel=3
+ENV CUDA_VISIBLE_DEVICES=""
+
+# ✅ Pre-create logs directory
+RUN mkdir -p logs
+
+# ✅ Environment variables
+ENV PYTHONUNBUFFERED=1
+ENV CLIENT_ID=0
+ENV PYTHONPATH=/app
+
+# ✅ Start after waiting for the server
+CMD ["sh", "-c", "python wait-for-server.py && python -m client.client"]

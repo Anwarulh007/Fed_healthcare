@@ -1,0 +1,25 @@
+FROM tensorflow/tensorflow:2.13.0
+
+
+WORKDIR /app
+
+# ✅ Copy and install dependencies
+COPY  requirements.txt ./requirements.txt
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+# ✅ Copy only necessary code
+COPY server/ server/
+COPY client/encryption_utils.py ./client/encryption_utils.py
+COPY model/model.py ./model/model.py
+ENV TF_CPP_MIN_LOG_LEVEL=3
+ENV GLOG_minloglevel=3
+ENV FLAGS_minloglevel=3
+ENV CUDA_VISIBLE_DEVICES=""
+
+# ✅ Environment setup
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
+
+# ✅ Run the server
+CMD ["python", "server/server.py"]
