@@ -1,0 +1,142 @@
+
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.server
+    volumes:
+      - ./logs:/app/logs
+      - ./client:/app/client 
+      - ./model:/app/model 
+      - ./utils:/app/utils         
+      - ./fedhealth/notebooks/readmission_tokyo_encoded.csv:/app/readmission_tokyo_encoded.csv
+      - ./fedhealth/notebooks/readmission_London_encoded.csv:/app/readmission_London_encoded.csv
+      - ./fedhealth/notebooks/Encoded_Johns_Hospital_Data.csv:/app/Encoded_Johns_Hospital_Data.csv
+      - ./fedhealth/notebooks/Encoded_Prince_Hospital_Data.csv:/app/Encoded_Prince_Hospital_Data.csv
+    environment:
+      - PYTHONUNBUFFERED=1
+      - TF_CPP_MIN_LOG_LEVEL=3
+      - CUDA_VISIBLE_DEVICES=""
+      - FLAGS_logtostderr=0
+      - FLAGS_minloglevel=3
+      - GLOG_minloglevel=3
+    command: python server/server.py
+
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - flower_network
+
+  client1:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.client
+    volumes:
+      - ./logs:/app/logs
+      - ./model:/app/model
+      - ./client:/app/client
+      - ./fedhealth/notebooks/readmission_tokyo_encoded.csv:/app/readmission_tokyo_encoded.csv:ro
+    environment:
+      - CLIENT_ID=1
+      - FLOWER_SERVER=server
+      - FLOWER_PORT=8080
+      - TF_CPP_MIN_LOG_LEVEL=3
+      - CUDA_VISIBLE_DEVICES=""
+      - FLAGS_logtostderr=0
+      - FLAGS_minloglevel=3
+      - GLOG_minloglevel=3
+    command: python client/client.py
+
+
+    depends_on:
+      - server
+    networks:
+      - flower_network
+
+  client2:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.client
+    volumes:
+      - ./logs:/app/logs
+      - ./model:/app/model
+      - ./client:/app/client
+      - ./fedhealth/notebooks/readmission_London_encoded.csv:/app/readmission_London_encoded.csv:ro
+    environment:
+      - CLIENT_ID=2
+      - FLOWER_SERVER=server
+      - FLOWER_PORT=8080
+      - TF_CPP_MIN_LOG_LEVEL=3
+      - CUDA_VISIBLE_DEVICES=""
+      - FLAGS_logtostderr=0
+      - FLAGS_minloglevel=3
+      - GLOG_minloglevel=3
+    command: python client/client.py
+
+
+    depends_on:
+      - server
+    networks:
+      - flower_network
+
+  client3:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.client
+    volumes:
+      - ./logs:/app/logs
+      - ./model:/app/model
+      - ./client:/app/client
+      - ./fedhealth/notebooks/Encoded_Johns_Hospital_Data.csv:/app/Encoded_Johns_Hospital_Data.csv:ro
+    environment:
+      - CLIENT_ID=3
+      - FLOWER_SERVER=server
+      - FLOWER_PORT=8080
+      - TF_CPP_MIN_LOG_LEVEL=3
+      - CUDA_VISIBLE_DEVICES=""
+      - FLAGS_logtostderr=0
+      - FLAGS_minloglevel=3
+      - GLOG_minloglevel=3
+    command: python client/client.py
+
+
+    depends_on:
+      - server
+    networks:
+      - flower_network
+
+  client4:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.client
+    volumes:
+      - ./logs:/app/logs
+      - ./model:/app/model
+      - ./client:/app/client
+      - ./fedhealth/notebooks/Encoded_Prince_Hospital_Data.csv:/app/Encoded_Prince_Hospital_Data.csv:ro
+    environment:
+      - CLIENT_ID=4
+      - FLOWER_SERVER=server
+      - FLOWER_PORT=8080
+      - TF_CPP_MIN_LOG_LEVEL=3
+      - CUDA_VISIBLE_DEVICES=""
+      - FLAGS_logtostderr=0
+      - FLAGS_minloglevel=3
+      - GLOG_minloglevel=3
+    command: python client/client.py
+
+
+
+    depends_on:
+      - server
+    networks:
+      - flower_network
+
+networks:
+  flower_network:
+    driver: bridge
