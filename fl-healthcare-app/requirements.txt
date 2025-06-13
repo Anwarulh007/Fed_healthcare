@@ -1,0 +1,12 @@
+streamlit
+matplotlib
+pandas
+numpy
+tensorflow-cpu==2.13.0
+# other dependencies (e.g. numpy, pandas, etc.)
+
+flwr==1.6.0
+numpy
+pandas
+scikit-learn
+plotly
