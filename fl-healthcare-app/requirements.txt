@@ -3,7 +3,7 @@ matplotlib
 pandas
 numpy
 
-
+seaborn
 flwr==1.6.0
 numpy
 pandas
