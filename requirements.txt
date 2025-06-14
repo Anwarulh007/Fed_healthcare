@@ -1,6 +1,10 @@
-flwr==1.6.0
-numpy
+streamlit
+matplotlib
 pandas
+numpy
+seaborn
+plotly
+flwr==1.6.0
 scikit-learn
 cryptography
 google-api-python-client
@@ -10,5 +14,3 @@ joblib
 tabulate
 PySyft
 Pillow
-matplotlib
-seaborn
