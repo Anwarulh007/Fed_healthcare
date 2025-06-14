@@ -281,7 +281,7 @@ with tabs[4]:
         st.success("✅ 4 CSV files uploaded successfully.")
         view_option = st.radio("Choose output: ", ["Log Output", "Image Output"], horizontal=True)
         if view_option == "Log Output":
-            log_path = "D:/project/federated_fl_project/Fed_Health/simulation_output.txt"
+            log_path = "assets/simulation_output.log"
             if os.path.exists(log_path):
                 with open(log_path, "r", encoding="utf-8", errors="ignore") as f:
                     log_data = f.read()
