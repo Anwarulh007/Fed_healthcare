@@ -1,6 +1,3 @@
-﻿tensorflow-cpu==2.13.0
-# other dependencies (e.g. numpy, pandas, etc.)
-
 flwr==1.6.0
 numpy
 pandas
@@ -9,8 +6,9 @@ cryptography
 google-api-python-client
 google-auth
 google-auth-oauthlib
-scikit-learn
 joblib
 tabulate
 PySyft
-# DO NOT include TensorFlow – already in the base image
+Pillow
+matplotlib
+seaborn
