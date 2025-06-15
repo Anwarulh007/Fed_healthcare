@@ -2,7 +2,7 @@
 server-1   | 
 server-1   | [Server] Federated Learning Server Started
 server-1   | 
-server-1   | [Strategy] EncryptedFedAvg | Clients: 4 | Rounds: 5
+server-1   | [Strategy] EncryptedFedAvg | Clients: 4 | Rounds: 10
 server-1   | 
 server-1   | [Server] Listening at [::]:8080...
 server-1   | 
