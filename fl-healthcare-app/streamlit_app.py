@@ -19,7 +19,7 @@ st.markdown("""
 
         /* Main Content Block (where everything sits) */
         [data-testid="stVerticalBlock"] {
-            background-color: rgba(255, 255, 255, 1); /* white with transparency */
+            background-color: #001f3f; /* white with transparency */
             padding: 20px;
             border-radius: 15px;
         }
